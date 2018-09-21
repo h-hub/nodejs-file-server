@@ -1,0 +1,1 @@
+A simple static file server built with Node.js
