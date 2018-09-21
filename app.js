@@ -2,33 +2,6 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 
-var addDynamicContent = function (content, request) {
-
-    var values = params(request);
-    var fileContent = content.toString();
-
-    for (var key in values) {
-        var regex = new RegExp("{{" + key + "}}");
-        fileContent = fileContent.replace(regex, values[key]);
-    }
-
-    return fileContent;
-}
-
-var params = function (req) {
-    let q = req.url.split('?'), result = {};
-    if (q.length >= 2) {
-        q[1].split('&').forEach((item) => {
-            try {
-                result[item.split('=')[0]] = item.split('=')[1];
-            } catch (e) {
-                result[item.split('=')[0]] = '';
-            }
-        })
-    }
-    return result;
-}
-
 http.createServer(function (request, response) {
     console.log('request starting...');
 
@@ -82,3 +55,30 @@ http.createServer(function (request, response) {
 
 }).listen(1989);
 console.log('Server running at http://127.0.0.1:1989/');
+
+var addDynamicContent = function (content, request) {
+
+    var values = params(request);
+    var fileContent = content.toString();
+
+    for (var key in values) {
+        var regex = new RegExp("{{" + key + "}}");
+        fileContent = fileContent.replace(regex, values[key]);
+    }
+
+    return fileContent;
+}
+
+var params = function (req) {
+    let q = req.url.split('?'), result = {};
+    if (q.length >= 2) {
+        q[1].split('&').forEach((item) => {
+            try {
+                result[item.split('=')[0]] = item.split('=')[1];
+            } catch (e) {
+                result[item.split('=')[0]] = '';
+            }
+        })
+    }
+    return result;
+}
